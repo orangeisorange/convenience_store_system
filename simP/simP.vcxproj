@@ -127,13 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\심프_팀프로젝트\product.h" />
-    <ClInclude Include="..\..\..\..\Desktop\심프_팀프로젝트\seller.h" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="product.cpp" />
+    <ClCompile Include="seller.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\심프_팀프로젝트\product.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\심프_팀프로젝트\seller.cpp" />
-    <ClCompile Include="..\..\..\..\Desktop\심프_팀프로젝트\test.cpp" />
+    <ClInclude Include="product.h" />
+    <ClInclude Include="seller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
