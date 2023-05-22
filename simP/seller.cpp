@@ -39,3 +39,12 @@ void seller::end_Day()
     day_income_pair.insert(std::make_pair(this->cur_date, this->income));
 }
 
+void seller::show_Data() {
+    for (const auto& product : product_income_pair) {
+        std::cout << "상품 명 : " << product.first << "의 매출은 " << product.second << "원" << std::endl;
+    }
+    std::cout << std::endl << std::endl;
+    for (const auto& day : day_income_pair) {
+        std::cout << day.first << " : " << day.second << "원" << std::endl;
+    }
+}
