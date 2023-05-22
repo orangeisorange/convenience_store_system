@@ -3,15 +3,16 @@
 #include <map>
 #include <ctime>
 #include <chrono>
+#include <fstream>
+#include <string>
+
 
 // 재고 정리하는 함수 만들어야 함. _ 따로 클래스를 만드는 것에 대해서 고려해 볼것.
 // load시, 기존에 있던 data를 다 날리고 새로 dictionary를 만들기
+
 class csv_control{
 public:
-    static void load_product_csv();
-    static void load_date_csv();
-    static void save_product_csv();
-    static void save_date_csv();
+
 };
 
 class seller{
@@ -21,6 +22,7 @@ class seller{
     int cur_date;
     int income;
 public:
+    void day_plus_one();
     void clear_seller_income();
     void set_day_today();
     void init_product_income_map();
@@ -29,4 +31,11 @@ public:
     bool check_Password(std::string pass_input);
     void end_Day();
     void show_Data();
+    void payment_complete(std::string name, int count);
+    int get_price(std::string name);
+
+    void load_product_csv();
+    void load_date_csv();
+    void save_product_csv();
+    void save_date_csv();
 };
