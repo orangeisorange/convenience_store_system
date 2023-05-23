@@ -16,6 +16,7 @@ class seller{
     int cur_date;
     int income;
 public:
+    product* init_product_info();
     void day_plus_one();
     void clear_seller_income();
     void set_day_today();
@@ -25,7 +26,7 @@ public:
     bool check_Password(std::string pass_input);
     void end_Day();
     void show_Data();
-    void payment_complete(std::string name, int count);
+    void payment_complete(std::string name, int count, product* p);
     int get_price(std::string name);
 
     void load_product_csv();

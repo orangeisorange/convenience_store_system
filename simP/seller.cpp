@@ -1,4 +1,5 @@
 #include "seller.h"
+#include "product.h"
 using namespace std;
 
 void seller::set_day_today()
@@ -33,6 +34,12 @@ void seller::init_product_income_map()
 }
 
 void seller::clear_seller_income() { this->income = 0; }
+
+product * seller::init_product_info()
+{
+    product* p = new product[5]{product("과자"), product("삼각김밥"), product("커피"),product("담배"), product("빵")};
+    return p;
+}
 
 void seller::day_plus_one() {
     int year = this->cur_date / 10000;
@@ -72,10 +79,13 @@ void seller::show_Data() {
 }
 
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수
-void seller::payment_complete(string name, int count)
+void seller::payment_complete(string name, int count, product * p)
 {
     for (auto& product : product_income_pair) {
         if (product.first == name) {
+            for (int i = 0; i < 5; i++)
+                if (p[i].get_name() == name)
+                    p[i].stock_minus(count);
             product.second += count;
             this->income += count * get_price(name);
         }

@@ -1,5 +1,11 @@
 #include "product.h"
 
+product::product(std::string name)
+{
+	this->p_name = name;
+	stock_fill();
+}
+
 void product::stock_fill()
 {
 	this->stock = 5;
