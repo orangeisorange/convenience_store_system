@@ -7,13 +7,7 @@
 #include <string>
 
 
-// 재고 정리하는 함수 만들어야 함. _ 따로 클래스를 만드는 것에 대해서 고려해 볼것.
 // load시, 기존에 있던 data를 다 날리고 새로 dictionary를 만들기
-
-class csv_control{
-public:
-
-};
 
 class seller{
     std::map<std::string, int> product_income_pair;
