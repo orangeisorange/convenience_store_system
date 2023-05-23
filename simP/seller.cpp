@@ -1,5 +1,4 @@
 #include "seller.h"
-#include "product.h"
 using namespace std;
 
 void seller::set_day_today()
@@ -13,10 +12,10 @@ void seller::set_day_today()
 }
 
 seller::seller() {
-        init_product_income_map();
-        set_day_today();
-        this->income = 0;
-        this->password = "1q2we3e4r!";
+    init_product_income_map();
+    set_day_today();
+    this->income = 0;
+    this->password = "1q2we3e4r!";
 }
 
 bool seller::check_Password(string pass_input) {
@@ -108,8 +107,18 @@ int seller::get_price(string name)
         return 0;
 }
 
+void seller::init_csv()
+{
+    // 파일 생성
+    ofstream fs("product_income.csv");
+    ofstream fs1("date_income.csv");
+    fs.close();
+    fs1.close();
+}
+
 void seller::load_product_csv()
 {
+    fstream fs("product_income.csv");
 }
 
 void seller::load_date_csv()
@@ -131,8 +140,10 @@ void seller::load_date_csv()
 
 void seller::save_product_csv()
 {
+    ofstream fs("product_income.csv");
 }
 
 void seller::save_date_csv()
 {
+    ofstream fs("date_income.csv");
 }

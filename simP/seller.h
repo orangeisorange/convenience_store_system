@@ -30,6 +30,7 @@ public:
     void payment_complete(std::string name, int count, product* p);
     int get_price(std::string name);
 
+    void init_csv();
     void load_product_csv();
     void load_date_csv();
     void save_product_csv();
