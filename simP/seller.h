@@ -5,6 +5,7 @@
 #include <chrono>
 #include <fstream>
 #include <string>
+#include "product.h"
 
 
 // load시, 기존에 있던 data를 다 날리고 새로 dictionary를 만들기
