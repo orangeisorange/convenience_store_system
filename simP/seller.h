@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include "product.h"
-
+using namespace std;
 
 // load시, 기존에 있던 data를 다 날리고 새로 dictionary를 만들기
 
@@ -22,10 +22,12 @@ public:
     void clear_seller_income();
     void set_day_today();
     void init_product_income_map();
+    void refund(string name, int n, product *p);
+    // refund 의 경우는, 일단은 단순하게 구현하고, 영수증을 구현할 여력이 되면, 영수증을
+    // 리스트나 뭐 아무거나로 구현해서 영수증 일련번호를 받아서 전체 환불을 진행하는 식으로 해볼까
     seller();
-    // end_Day가 실행되면, 날짜가 다음날로 바뀜과 동시에, csv 파일 생성 또는 최신화.
     bool check_Password(std::string pass_input);
-    void end_Day();
+    void end_Day(product* p);
     void show_Data();
     void payment_complete(std::string name, int count, product* p);
     int get_price(std::string name);

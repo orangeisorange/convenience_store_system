@@ -16,6 +16,11 @@ void product::stock_minus(int num)
 	stock -= num;
 }
 
+void product::stock_plus(int num)
+{
+	stock += num;
+}
+
 void product::change_name(std::string new_name)
 {
 	this->p_name = new_name;

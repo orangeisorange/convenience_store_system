@@ -1,5 +1,4 @@
 #include "seller.h"
-using namespace std;
 
 void seller::set_day_today()
 {
@@ -32,6 +31,16 @@ void seller::init_product_income_map()
     product_income_pair.insert(make_pair("빵", 0));
 }
 
+void seller::refund(string name, int n, product* p)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if(p[i].get_name() == name){
+            p[i].stock_plus(n);
+        }
+    }
+}
+
 void seller::clear_seller_income() { this->income = 0; }
 
 product * seller::init_product_info()
@@ -60,10 +69,15 @@ void seller::day_plus_one() {
     this->cur_date = year * 10000 + month * 100 + day;
 }
 
-void seller::end_Day()
+// end_Day가 실행되면, 날짜가 다음날로 바뀜과 동시에, csv 파일 생성 또는 최신화.
+void seller::end_Day(product *p)
 {
     day_income_pair.insert(make_pair(this->cur_date, this->income));
     cout << "다음 날로 변경합니다. ";
+    for (int i = 0; i < 5; i++)
+    {
+        p[i].stock_fill();
+    }
     day_plus_one();
 }
 
@@ -118,32 +132,57 @@ void seller::init_csv()
 
 void seller::load_product_csv()
 {
-    fstream fs("product_income.csv");
+    string name;
+    int income;
+    string test;
+    fstream fs("product_income.csv", ios::in);
+    if (!fs) {
+        cout << "" << " 열기 오류" << endl;
+    }
+    this->product_income_pair.clear();
+    while (!fs.eof()) {
+        getline(fs, test, ',');
+        name = test;
+        getline(fs, test, ',');
+        income = stoi(test);
+        this->product_income_pair.insert(make_pair(name, income));
+    }
 }
 
+// 경고, 현재까지의 매출을 csv 파일로 미리 save 하지 않은 경우, 입력되었던 매출이 다 날아감
 void seller::load_date_csv()
 {
     int date;
     int income;
     string test;
-    fstream fs;
-    fs.open("test.csv", ios::in);
+    fstream fs("date_income.csv", ios::in);
     if (!fs) {
         cout << "" << " 열기 오류" << endl;
     }
-
+    this->day_income_pair.clear();
     while (!fs.eof()) {
         getline(fs, test, ',');
-        
+        date = stoi(test);
+        getline(fs, test, ',');
+        income = stoi(test);
+        this->day_income_pair.insert(make_pair(date, income));
     }
 }
 
 void seller::save_product_csv()
 {
-    ofstream fs("product_income.csv");
+    ofstream fs("product_income.csv", ios::app);
+    for (auto& product : product_income_pair)
+    {
+        fs << product.first << ',' << product.second << '\n';
+    }
 }
 
 void seller::save_date_csv()
 {
-    ofstream fs("date_income.csv");
+    ofstream fs("date_income.csv", ios::app);
+    for (auto& day : day_income_pair)
+    {
+        fs << day.first << ',' << day.second << '\n';
+    }
 }
