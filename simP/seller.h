@@ -23,7 +23,8 @@ public:
     void day_plus_one();                            // when end of day, this is used. cur_date + 1
     void clear_seller_income();                     // when end of day, this is used. income become 0
     void set_day_today();                           // make cur_date become today.
-    
+    product* get_product();
+
     void refund(string name, int n, product *p);
     // refund 의 경우는, 일단은 단순하게 구현하고, 영수증을 구현할 여력이 되면, 영수증을
     // 리스트나 뭐 아무거나로 구현해서 영수증 일련번호를 받아서 전체 환불을 진행하는 식으로 해볼까

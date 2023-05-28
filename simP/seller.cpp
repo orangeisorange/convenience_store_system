@@ -10,6 +10,11 @@ void seller::set_day_today()
     this->cur_date = Date;
 }
 
+product* seller::get_product()
+{
+    return this->products;
+}
+
 seller::seller() {
     init_product_income_map();
     set_day_today();
@@ -99,12 +104,13 @@ void seller::show_product()
     cout << "상품명";
     cout.width(12);
     cout << "현재 재고" << endl;
-    for(int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++)
     {
         cout.width(12);
         cout << this->products[i].get_name();
         cout.width(12);
         cout << this->products[i].get_stock() << endl;
+    }
 }
 
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수

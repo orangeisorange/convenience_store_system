@@ -1,4 +1,3 @@
-#include "seller.h"
 #include "service.h"
 using namespace std;
 
@@ -29,7 +28,7 @@ int show_seller_screen() {
 		cout << "6. 상위 메뉴로" << endl;
 	}
 }
-
+/*
 int show_customer_screen(seller admin) {
 	while (1)
 	{
@@ -39,7 +38,7 @@ int show_customer_screen(seller admin) {
 		admin.show_product();
 	}
 }
-
+*/
 int main()
 {
 	seller admin();

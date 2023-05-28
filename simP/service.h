@@ -1,5 +1,6 @@
 #include <iostream>
 #include "customer.h"
+#include "seller.h"
 
 class Service: public Customer {
 public:
@@ -8,5 +9,5 @@ public:
     void getPoint(std::string name, int amount);
     void usePoint(std::string name);
     void useCard();
-    void order(std::string name);
+    void order(std::string name, seller admin);
 };
