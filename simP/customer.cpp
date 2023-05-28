@@ -1,7 +1,7 @@
 #include "customer.h"
 using namespace std;
 
-void Customer::addName(std::string newName) { //고객 이름 입력
+void Customer::setName(std::string newName) { //고객 이름 입력
     this->names = newName;
 }
 

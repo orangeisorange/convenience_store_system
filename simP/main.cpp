@@ -14,7 +14,8 @@ int show_main_screen() {
 		cout << "편의점 서비스에 오신 것을 환영합니다." << endl;
 		cout << "1. 주문 모드(고객님전용)" << endl;
 		cout << "2. 관리자 모드(점주님전용)" << endl;
-		cout << "3. 종료 " << endl;
+		cout << "3. 고객님의 편의점 계정 생성" << endl;
+		cout << "4. 종료 " << endl;
 		cin >> main_menu;
 		cin.ignore();
 		if (main_menu >= 1 && main_menu <= 3) return main_menu;
@@ -106,6 +107,16 @@ int main()
 			break;
 		}
 		case 3:
+		{
+			cout << "고객님의 성함을 입력해 주시면 계정이 만들어 집니다 !" << endl;
+			cout << "공백을 제외한 고객님의 성함을 입력해 주세요 ! " << endl;
+			string name_cus;
+			cin >> name_cus;
+			Customer tmp;
+			
+			s1.customerList.insert();
+		}
+		case 4:
 			turn_off_system = 0;
 			break;
 		}

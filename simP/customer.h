@@ -7,7 +7,7 @@ class Customer {
 public:
     string names;
     int points;
-    void addName(string newName);
+    void setName(string newName);
     void changeName(string newName);
     void setPoint(string name, int value);
     int showPoint();
