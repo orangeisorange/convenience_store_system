@@ -113,8 +113,8 @@ int main()
 			string name_cus;
 			cin >> name_cus;
 			Customer tmp;
-			
-			s1.customerList.insert();
+			tmp.setName(name_cus);
+			s1.customerList.push_back(tmp);
 		}
 		case 4:
 			turn_off_system = 0;
