@@ -22,6 +22,16 @@ seller::seller() {
     this->products = init_product_info();
 }
 
+int seller::get_income()
+{
+    return income;
+}
+
+int seller::get_cur_date()
+{
+    return cur_date;
+}
+
 bool seller::check_Password(string pass_input) {
     if (this->password == pass_input) return true;
     else return false;
@@ -68,13 +78,13 @@ void seller::day_plus_one() {
 // end_Day가 실행되면, 날짜가 다음날로 바뀜과 동시에, csv 파일 생성 또는 최신화.
 void seller::end_Day(product *p)
 {
-    day_income_pair.insert(make_pair(this->cur_date, this->income));
     cout << "다음 날로 변경합니다. ";
     for (int i = 0; i < 5; i++)
     {
         p[i].stock_fill();
     }
     day_plus_one();
+    day_income_pair.insert(make_pair(get_cur_date(), get_income()));
 }
 
 void seller::show_Data() {

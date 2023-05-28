@@ -23,7 +23,8 @@ public:
     product* init_product_info();                    // init product array and return address
 //    void init_product_income_map();                 // init product_map
     seller();                                       // seller init
-
+    int get_income();
+    int get_cur_date();
     void day_plus_one();                            // when end of day, this is used. cur_date + 1
     void clear_seller_income();                     // when end of day, this is used. income become 0
     void set_day_today();                           // make cur_date become today.

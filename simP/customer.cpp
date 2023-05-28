@@ -9,7 +9,7 @@ void Customer::registerUser(Customer& customer) {
     std::string userName;
     cout << "고객 이름을 입력하세요: ";
     cin >> userName;
-    customer.addName(userName);
+    customer.setName(userName);
 }
 
 
