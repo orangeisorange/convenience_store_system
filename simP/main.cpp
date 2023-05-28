@@ -59,22 +59,6 @@ int main()
 		{
 		case 1:
 		{
-			cout << "저희 편의점 포인트 시스템에 가입이 되어 있나요? (Y / N)" << endl;
-			char Y_N;
-			string tmp_name;
-			int idx = -1;
-			cin >> Y_N;
-			/* 여기서 고객 이름 등록되있는지 확인해야 함. 구현좀 부탁
-			if (Y_N == 'y' || Y_N == 'Y')
-			{
-				cout << "등록된 이름을 입력해 주세요." << endl;
-				cin >> tmp_name;
-				idx = s1.check_Name(tmp_name);
-				if (idx == -1) {
-					cout << "등록되지 않은 고객입니다." << endl;
-				}
-			}
-			*/
 			s1.order(admin);
 			break;
 		}
