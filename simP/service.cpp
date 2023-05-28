@@ -1,6 +1,5 @@
-#include <iostream>
 #include "service.h"
-#include "customer.h"
+
 void Service::delName(std::string name) { //포인트를 다 썼을 경우 고객이름 삭제 --> 아직 안넣음
     for (auto it = customerList.begin(); it != customerList.end(); ++it) {
         for (size_t i = 0; i < it->names.size(); ++i) {

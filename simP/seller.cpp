@@ -15,6 +15,7 @@ seller::seller() {
     set_day_today();
     this->income = 0;
     this->password = "1q2we3e4r!";
+    this->products = init_product_info();
 }
 
 bool seller::check_Password(string pass_input) {
@@ -89,6 +90,21 @@ void seller::show_Data() {
     for (const auto& day : day_income_pair) {
         cout << day.first << " : " << day.second << "원" << endl;
     }
+}
+
+void seller::show_product()
+{
+    cout.setf(ios::left);
+    cout.width(12);
+    cout << "상품명";
+    cout.width(12);
+    cout << "현재 재고" << endl;
+    for(int i = 0; i < 5; i++)
+    {
+        cout.width(12);
+        cout << this->products[i].get_name();
+        cout.width(12);
+        cout << this->products[i].get_stock() << endl;
 }
 
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수

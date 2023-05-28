@@ -1,5 +1,5 @@
 #include "customer.h"
-#include <string>
+
 void Point::addPoint(int amount) { //포인트를 얼만큼 적립하거나 사용할지 변수를 안정해서 amount로 함
     value += amount;
 }

@@ -11,9 +11,11 @@ void product::stock_fill()
 	this->stock = 5;
 }
 
-void product::stock_minus(int num)
+bool product::stock_minus(int num)
 {
+	if (num > stock) return false;
 	stock -= num;
+	return true;
 }
 
 void product::stock_plus(int num)
