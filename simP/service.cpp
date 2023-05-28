@@ -1,34 +1,41 @@
 #include "service.h"
+#include <fstream>
 using namespace std;
 
 void Service::delName(std::string name) { //포인트를 다 썼을 경우 고객이름 삭제 --> 아직 안넣음
-    for (auto it = customerList.begin(); it != customerList.end(); ++it) {
-        for (int i = 0; i < it->names.size(); i++) {
-            if (it->names[i] == name) {
-                it->names.erase(it->names.begin() + i);
-                it->points.erase(it->points.begin() + i);
-                return;
-            }
-        }
+    int idx = this->check_Name(name);
+    if(idx!= -1)
+        this->customerList.erase(customerList.begin() + idx);
+}
+
+int Service::check_Name(string name)
+{
+    int size = this->customerList.size();
+    for (int i = 0; i < size; i++)
+    {
+        if (this->customerList.at(i).names == name)
+            return i;
     }
+    return -1;
 }
 
 void Service::getPoint(std::string name, int amount) //포인트 적립 (amount 안정함)
 {
-    for (auto& customer : customerList) {
-        for (int i = 0; i < customer.names.size(); i++) {
-            if (customer.names[i] == name) {
-                customer.points[i].addPoint(amount); //amount만 정하면 됨
-                return;
-            }
-        }
-    }
+    int idx = this->check_Name(name);
+    this->customerList.at(idx).points += amount;
+
 }
 
 
 void Service::usePoint(std::string name) { //결제
-
-    int point = showPoint(name);
+    int size = this->customerList.size();
+    int point;
+    int idx = this->check_Name(name);
+    point = customerList.at(idx).points;
+    if (idx == -1) {
+        cout << "잘못된 사용자명 입력입니다. " << endl;
+        return;
+    }
     cout << "잔여 포인트" << point << endl;
 
     if (point > 0) {
@@ -38,14 +45,7 @@ void Service::usePoint(std::string name) { //결제
         cin >> paymentAmount;
 
         if (paymentAmount <= point) {
-            for (auto& customer : customerList) {
-                for (size_t i = 0; i < customer.names.size(); ++i) {
-                    if (customer.names[i] == name) {
-                        customer.points[i].subPoint(paymentAmount);
-                        return;
-                    }
-                }
-            }
+            this->subPoint(paymentAmount, idx);
             cout << "결제가 완료되었습니다." << endl;
         }
         else {
@@ -60,18 +60,28 @@ void Service::usePoint(std::string name) { //결제
 
 }
 
+void Service::addPoint(int amount, int idx_at)
+{
+    this->customerList.at(idx_at).points += amount;
+}
+
+void Service::subPoint(int amount, int idx_at)
+{
+    this->customerList.at(idx_at).points += amount;
+}
+
 
 void Service::useCard() {
     cout << "결제가 완료되었습니다." << endl;
 }
 
-void Service::order(std::string name, seller admin) {
+void Service::order(seller admin) {
     cout << "상품을 선택해주세요" << endl;
     admin.show_product();
     string pointcustomer;
     int num = 0;
     string buyproduct[5];
-    int buystock[5];
+    int buystock[5] = { 0 };
     char choice;
     int sum = 0;
     while (true) {
@@ -101,7 +111,8 @@ void Service::order(std::string name, seller admin) {
     else
         useCard();
     for (int i = 0; i <= num; i++) {
-        admin.payment_complete(buyproduct[i], buystock[i],admin.get_product());
+        cout << buyproduct[i] << endl;
+        admin.payment_complete(buyproduct[i], buystock[i],admin.get_product(),product_income_pair, day_income_pair);
     }
     cout << "포인트를 적립하시겠습니까?(y/n): ";
     cin >> choice;
@@ -114,6 +125,21 @@ void Service::order(std::string name, seller admin) {
     else
         cout << "감사합니다";
 
+}
+
+void Service::save_customerList()
+{
+    ofstream fs("customerList.txt", ios::app);
+    int size = customerList.size();
+    for (int i = 0; i < size; i++)
+    {
+        fs << customerList.at(i).names << ',' << customerList.at(i).points << '\n';
+    }
+}
+
+void Service::load_customerList()
+{
+    
 }
 
 

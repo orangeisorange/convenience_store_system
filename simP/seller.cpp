@@ -16,25 +16,15 @@ product* seller::get_product()
 }
 
 seller::seller() {
-    init_product_income_map();
     set_day_today();
     this->income = 0;
-    this->password = "1q2we3e4r!";
+    this->password = "1q2w3e4r!";
     this->products = init_product_info();
 }
 
 bool seller::check_Password(string pass_input) {
     if (this->password == pass_input) return true;
     else return false;
-}
-
-void seller::init_product_income_map()
-{
-    product_income_pair.insert(make_pair("과자", 0));
-    product_income_pair.insert(make_pair("삼각김밥", 0));
-    product_income_pair.insert(make_pair("커피", 0));
-    product_income_pair.insert(make_pair("담배", 0));
-    product_income_pair.insert(make_pair("빵", 0));
 }
 
 void seller::refund(string name, int n, product* p)
@@ -113,18 +103,18 @@ void seller::show_product()
     }
 }
 
+
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수
-void seller::payment_complete(string name, int count, product * p)
+// 수정 필요. 실제로 값이 바뀌지가 않음.
+void seller::payment_complete(std::string name, int count, product* p, map<string, int> &sel_map, map<int, int> &pro_map)
 {
-    for (auto& product : product_income_pair) {
-        if (product.first == name) {
-            for (int i = 0; i < 5; i++)
-                if (p[i].get_name() == name)
-                    p[i].stock_minus(count);
-            product.second += count;
-            this->income += count * get_price(name);
+    for (int i = 0; i < 5; i++) 
+        if (p[i].get_name() == name) {
+            p[i].stock_minus(count);
+            income += this->get_price(p[i].get_name()) * count;
         }
-    }
+    sel_map[name] = count;
+    pro_map[cur_date] = income;
 }
 
 int seller::get_price(string name)
@@ -161,13 +151,13 @@ void seller::load_product_csv()
     if (!fs) {
         cout << "" << " 열기 오류" << endl;
     }
-    this->product_income_pair.clear();
+    product_income_pair.clear();
     while (!fs.eof()) {
         getline(fs, test, ',');
         name = test;
         getline(fs, test, ',');
         income = stoi(test);
-        this->product_income_pair.insert(make_pair(name, income));
+        product_income_pair.insert(make_pair(name, income));
     }
 }
 
@@ -176,24 +166,25 @@ void seller::load_date_csv()
 {
     int date;
     int income;
-    string test;
+    string tmp;
     fstream fs("date_income.csv", ios::in);
     if (!fs) {
         cout << "" << " 열기 오류" << endl;
     }
-    this->day_income_pair.clear();
+    day_income_pair.clear();
     while (!fs.eof()) {
-        getline(fs, test, ',');
-        date = stoi(test);
-        getline(fs, test, ',');
-        income = stoi(test);
-        this->day_income_pair.insert(make_pair(date, income));
+        getline(fs, tmp, ',');
+        date = stoi(tmp);
+        getline(fs, tmp, ',');
+        income = stoi(tmp);
+        day_income_pair.insert(make_pair(date, income));
     }
 }
 
+
 void seller::save_product_csv()
 {
-    ofstream fs("product_income.csv", ios::app);
+    ofstream fs("product_income.csv", ios::app || ios::out);
     for (auto& product : product_income_pair)
     {
         fs << product.first << ',' << product.second << '\n';
@@ -202,7 +193,7 @@ void seller::save_product_csv()
 
 void seller::save_date_csv()
 {
-    ofstream fs("date_income.csv", ios::app);
+    ofstream fs("date_income.csv", ios::app || ios::out);
     for (auto& day : day_income_pair)
     {
         fs << day.first << ',' << day.second << '\n';
