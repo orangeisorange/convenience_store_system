@@ -2,10 +2,11 @@
 #include <string>
 using namespace std;
 
-std::map<int, int> day_income_pair;             // Used when using csv file.  <day(ex.230528), that day's whole income>
-std::map<std::string, int> product_income_pair; // Used when using csv file.  <product_name, product's whole income>
-
-
+map<int, int> day_income_pair;          // Used when using csv file.  <day(ex.230528), that day's whole income>
+map<string, int> product_income_pair;   // Used when using csv file.  <product_name, product's whole income>
+map<int, product *> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
+product receipt_product[5];					// product : show info what are you actually bought.
+int cur_day_receipt;
 
 int show_main_screen() {
 	while (1)
@@ -21,6 +22,23 @@ int show_main_screen() {
 		if (main_menu >= 1 && main_menu <= 4) return main_menu;
 		else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
 	}
+}
+void refresh_receipt_product()
+{
+	receipt_product[0].change_name("과자");
+	receipt_product[0].stock_minus(5);
+	receipt_product[1].change_name("삼각김밥");
+	receipt_product[1].stock_minus(5);
+	receipt_product[2].change_name("커피");
+	receipt_product[2].stock_minus(5);
+	receipt_product[3].change_name("담배");
+	receipt_product[3].stock_minus(5);
+	receipt_product[4].change_name("빵");
+	receipt_product[4].stock_minus(5);
+}
+void insert_receipt()
+{
+	receipt.insert(make_pair(cur_day_receipt, receipt_product));
 }
 void init_product_income_map()
 {
@@ -63,6 +81,7 @@ int main()
 		{
 		case 1:
 		{
+			refresh_receipt_product();
 			s1.order(admin);
 			break;
 		}

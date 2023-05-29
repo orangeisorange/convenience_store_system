@@ -20,6 +20,7 @@ seller::seller() {
     this->income = 0;
     this->password = "1q2w3e4r!";
     this->products = init_product_info();
+    cur_day_receipt = cur_date * 1000 + 1;
 }
 
 int seller::get_income()
@@ -85,6 +86,7 @@ void seller::end_Day(product *p)
     }
     day_plus_one();
     day_income_pair.insert(make_pair(get_cur_date(), get_income()));
+    cur_day_receipt = cur_date * 1000 + 1;
 }
 
 void seller::show_Data() {
@@ -125,6 +127,8 @@ void seller::payment_complete(std::string name, int count, product* p, map<strin
         }
     sel_map[name] = count;
     pro_map[cur_date] = income;
+    receipt.insert(make_pair(cur_day_receipt, receipt_product));
+    cur_day_receipt += 1;
 }
 
 int seller::get_price(string name)
@@ -207,5 +211,45 @@ void seller::save_date_csv()
     for (auto& day : day_income_pair)
     {
         fs << day.first << ',' << day.second << '\n';
+    }
+}
+
+void seller::load_receipt()
+{
+    string tmp;
+    int receipt_day_num;
+    int tmp_count;
+    product p[5];
+    fstream fs("receipt.txt", ios::in);
+    if (!fs) {
+        cout << "" << " 열기 오류" << endl;
+    }
+    receipt.clear();
+    while (!fs.eof()) {
+        refresh_receipt_product(p);
+        getline(fs, tmp, ',');
+        receipt_day_num = stoi(tmp);
+        for (int i = 0; i < 5; i++)
+        {
+            getline(fs, tmp, ',');
+            tmp_count = stoi(tmp);
+            p[i].stock_plus(tmp_count);
+        }
+    receipt.insert(make_pair(receipt_day_num, p));
+
+    }
+}
+
+void seller::save_receipt()
+{
+    ofstream fs("receipt.txt", ios::app || ios::out);
+    for (auto& rct : receipt)
+    {
+        fs << rct.first << ',';
+        for (int i = 0; i < 5; i++)
+        {
+            fs << rct.second[i].get_stock() << ',';
+        }
+        fs << '\n';
     }
 }

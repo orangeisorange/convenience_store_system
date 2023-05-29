@@ -11,6 +11,10 @@ using namespace std;
 
 extern map<int, int> day_income_pair;
 extern map<std::string, int> product_income_pair;
+extern map<int, product *> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
+// product : show info what are you actually bought.
+extern int cur_day_receipt;
+extern product receipt_product[5];
 
 class seller{
 //    std::map<int, int> day_income_pair;             // Used when using csv file.  <day(ex.230528), that day's whole income>

@@ -2,6 +2,9 @@
 #include <fstream>
 using namespace std;
 
+extern product receipt_product[5];					// product : show info what are you actually bought.
+
+
 void Service::delName(std::string name) { //포인트를 다 썼을 경우 고객이름 삭제 --> 아직 안넣음
     int idx = this->check_Name(name);
     if(idx!= -1)
@@ -80,8 +83,8 @@ void Service::order(seller admin) {
     admin.show_product();
     string pointcustomer;
     int num = 0;
-    string buyproduct[5];
-    int buystock[5] = { 0 };
+    string buyproduct[100];
+    int buystock[100] = { 0 };
     char choice;
     int sum = 0;
     while (true) {
@@ -89,6 +92,8 @@ void Service::order(seller admin) {
         cin >> buyproduct[num];
         cout << "수량: ";
         cin >> buystock[num];
+        for(int i = 0; i < 5; i++)
+        receipt_product
         cout << "더 주문하시겠습니까? (y/n)";
         cin >> choice;
         if (choice == 'y') {

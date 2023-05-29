@@ -7,6 +7,7 @@ class product{
     int stock;          // stock of product. The number of basic stocks is five
 public:
     product(string name);  // 
+    product();
     void stock_fill();          // filling stock up to five
     bool stock_minus(int num);  // stock minus num. if num > stock return false
     void stock_plus(int num);   // stock plus num. this function is used when refund is made

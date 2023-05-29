@@ -6,6 +6,11 @@ product::product(std::string name)
 	stock_fill();
 }
 
+product::product()
+{
+	stock_fill();
+}
+
 void product::stock_fill()
 {
 	this->stock = 5;
