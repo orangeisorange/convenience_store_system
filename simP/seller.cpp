@@ -48,27 +48,38 @@ void seller::refund(string name, int n, product* p)
         cout << "입력한 영수증의 번호가 존재하지 않습니다!" << endl;
         return;
     }
+    show_product(receipt[tmp_receipt_num]);
+    cout << "전부 환불하시겠습니까? (Y/N) >> ";
+    char Y_N;
+    cin >> Y_N;
+    if (Y_N == 'Y')
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            product_income_pair[receipt[tmp_receipt_num][i].get_name()] -= receipt[tmp_receipt_num][i].get_stock();
+            day_income_pair[tmp_receipt_num/1000] -= receipt[tmp_receipt_num][i].get_stock()* get_price(receipt[tmp_receipt_num][i].get_name());
+        }
+        receipt.erase(tmp_receipt_num);
+        return;
+    }
     while (1) {
-        show_product(receipt[tmp_receipt_num]);
-        cout << "전부 환불하시겠습니까? (Y/N) >> ";
         cout << "환불할 물품을 알려주세요 >>";
         string tmp_product;
         cin >> tmp_product;
         cout << "환불할 갯수를 알려주세요 >>";
         int count;
         cin >> count;
-        // 이 뒤로 할것 : 환불 입력 받을 때 마다
-        // 전체 매출과 물품 매출에서 줄이고 영수증에서도
-        // 줄여야 함. 만일 전부 환불이면 영수증 삭제.
-    }
-    /*
-    for (int i = 0; i < 5; i++)
-    {
-        if(p[i].get_name() == name){
-            p[i].stock_plus(n);
+        for (int i = 0; i < 5; i++)
+        {
+            if (tmp_product == receipt[tmp_receipt_num][i].get_name())
+            {
+                receipt[tmp_receipt_num][i].stock_minus(count);
+                product_income_pair[tmp_product] -= count;
+                day_income_pair[tmp_receipt_num / 1000] -= count * get_price(receipt[tmp_receipt_num][i].get_name());
+            }
         }
     }
-    */
+
 }
 
 void seller::clear_seller_income() { this->income = 0; }

@@ -44,6 +44,7 @@ public:
     void end_Day(product* p);                       // When end_Day runs, the date changes to the next day, and the csv file is updated.
     void show_Data();                               // show all the product-income , date-income data.
     void show_product();
+    void show_product(product* p);
     void payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map); // Used when customer paying the product. product stock - count. this->income + product's
     int get_price(std::string name);                // return product's price. If the name of the product is nowhere to be found return 0
 
