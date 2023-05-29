@@ -15,6 +15,8 @@ extern map<int, product *> receipt;				// int type(Ex.230529001 23.05.29 1th cus
 // product : show info what are you actually bought.
 extern int cur_day_receipt;
 extern product receipt_product[5];
+extern void refresh_receipt_product(product *p);
+
 
 class seller{
 //    std::map<int, int> day_income_pair;             // Used when using csv file.  <day(ex.230528), that day's whole income>
@@ -44,6 +46,9 @@ public:
     void show_product();
     void payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map); // Used when customer paying the product. product stock - count. this->income + product's
     int get_price(std::string name);                // return product's price. If the name of the product is nowhere to be found return 0
+
+    void load_receipt();
+    void save_receipt();
 
 /* below this line is all about csv management. These are used when end of day or save or load the data*/
     void init_csv();

@@ -92,8 +92,9 @@ void Service::order(seller admin) {
         cin >> buyproduct[num];
         cout << "수량: ";
         cin >> buystock[num];
-        for(int i = 0; i < 5; i++)
-        receipt_product
+        for (int i = 0; i < 5; i++)
+            if (receipt_product[i].get_name() == buyproduct[num])
+                receipt_product[i].stock_plus(buystock[num]);
         cout << "더 주문하시겠습니까? (y/n)";
         cin >> choice;
         if (choice == 'y') {

@@ -40,12 +40,35 @@ bool seller::check_Password(string pass_input) {
 
 void seller::refund(string name, int n, product* p)
 {
+    cout << "환불하실 물품이 있는 영수증의 번호를 입력해 주세요." << endl;
+    int tmp_receipt_num;
+    cin >> tmp_receipt_num;
+    if (receipt.count(tmp_receipt_num) == 0)
+    {
+        cout << "입력한 영수증의 번호가 존재하지 않습니다!" << endl;
+        return;
+    }
+    while (1) {
+        show_product(receipt[tmp_receipt_num]);
+        cout << "전부 환불하시겠습니까? (Y/N) >> ";
+        cout << "환불할 물품을 알려주세요 >>";
+        string tmp_product;
+        cin >> tmp_product;
+        cout << "환불할 갯수를 알려주세요 >>";
+        int count;
+        cin >> count;
+        // 이 뒤로 할것 : 환불 입력 받을 때 마다
+        // 전체 매출과 물품 매출에서 줄이고 영수증에서도
+        // 줄여야 함. 만일 전부 환불이면 영수증 삭제.
+    }
+    /*
     for (int i = 0; i < 5; i++)
     {
         if(p[i].get_name() == name){
             p[i].stock_plus(n);
         }
     }
+    */
 }
 
 void seller::clear_seller_income() { this->income = 0; }
@@ -115,6 +138,21 @@ void seller::show_product()
     }
 }
 
+void seller::show_product(product *p)
+{
+    cout.setf(ios::left);
+    cout.width(12);
+    cout << "상품명";
+    cout.width(12);
+    cout << "주문 했던 갯수" << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        cout.width(12);
+        cout << p[i].get_name();
+        cout.width(12);
+        cout << p[i].get_stock() << endl;
+    }
+}
 
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수
 // 수정 필요. 실제로 값이 바뀌지가 않음.
@@ -149,11 +187,13 @@ int seller::get_price(string name)
 
 void seller::init_csv()
 {
-    // 파일 생성
+    // 파일이 없다면 파일 생성
     ofstream fs("product_income.csv");
     ofstream fs1("date_income.csv");
+    ofstream fs2("receipt.txt");
     fs.close();
     fs1.close();
+    fs2.close();
 }
 
 void seller::load_product_csv()

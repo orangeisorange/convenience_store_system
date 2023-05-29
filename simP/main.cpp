@@ -23,18 +23,18 @@ int show_main_screen() {
 		else cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä " << endl << endl;
 	}
 }
-void refresh_receipt_product()
+void refresh_receipt_product(product *p)
 {
-	receipt_product[0].change_name("°úÀÚ");
-	receipt_product[0].stock_minus(5);
-	receipt_product[1].change_name("»ï°¢±è¹ä");
-	receipt_product[1].stock_minus(5);
-	receipt_product[2].change_name("Ä¿ÇÇ");
-	receipt_product[2].stock_minus(5);
-	receipt_product[3].change_name("´ã¹è");
-	receipt_product[3].stock_minus(5);
-	receipt_product[4].change_name("»§");
-	receipt_product[4].stock_minus(5);
+	p[0].change_name("°úÀÚ");
+	p[0].stock_minus(5);
+	p[1].change_name("»ï°¢±è¹ä");
+	p[1].stock_minus(5);
+	p[2].change_name("Ä¿ÇÇ");
+	p[2].stock_minus(5);
+	p[3].change_name("´ã¹è");
+	p[3].stock_minus(5);
+	p[4].change_name("»§");
+	p[4].stock_minus(5);
 }
 void insert_receipt()
 {
@@ -81,7 +81,7 @@ int main()
 		{
 		case 1:
 		{
-			refresh_receipt_product();
+			refresh_receipt_product(receipt_product);
 			s1.order(admin);
 			break;
 		}
