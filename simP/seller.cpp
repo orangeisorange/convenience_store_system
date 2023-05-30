@@ -214,11 +214,23 @@ int seller::get_price(string name)
 void seller::init_csv()
 {
     // 파일이 없다면 파일 생성
-    ofstream fs("product_income.csv",ios::out || ios::app);
-    ofstream fs1("date_income.csv", ios::out || ios::app);
-    ofstream fs2("receipt.txt", ios::out || ios::app);
-    ofstream fs3("customerList.txt", ios::out || ios::app);
-    fs.close();
+    fstream fs("product_income.csv", ios::in);
+    if (!fs) {
+        ofstream fs("product_income.csv", ios::out);
+    }
+    fstream fs1("date_income.csv", ios::in);
+    if (!fs1) {
+        ofstream fs1("date_income.csv", ios::out);
+    }
+    fstream fs2("receipt.txt", ios::in);
+    if (!fs2) {
+        ofstream fs2("receipt.txt", ios::out);
+    }
+    fstream fs3("customerList.txt", ios::in);
+    if (!fs3) {
+        ofstream fs3("customerList.txt", ios::out);
+    }
+    fs.close(); 
     fs1.close();
     fs2.close();
     fs3.close();
@@ -264,7 +276,7 @@ void seller::load_date_csv()
 
 void seller::save_product_csv()
 {
-    ofstream fs("product_income.csv", ios::app || ios::out);
+    ofstream fs("product_income.csv", ios::out);
     for (auto& product : product_income_pair)
     {
         fs << product.first << ',' << product.second << '\n';
@@ -273,7 +285,7 @@ void seller::save_product_csv()
 
 void seller::save_date_csv()
 {
-    ofstream fs("date_income.csv", ios::app || ios::out);
+    ofstream fs("date_income.csv", ios::out);
     for (auto& day : day_income_pair)
     {
         fs << day.first << ',' << day.second << '\n';
@@ -303,13 +315,12 @@ void seller::load_receipt()
         }
         
         receipt.insert(make_pair(receipt_day_num, p));
-        cout << receipt[receipt_day_num][0].get_name();
     }
 }
 
 void seller::save_receipt()
 {
-    ofstream fs("receipt.txt", ios::app || ios::out);
+    ofstream fs("receipt.txt", ios::out);
     for (auto& rct : receipt)
     {
         fs << rct.first << ',';

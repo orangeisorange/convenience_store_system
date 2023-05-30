@@ -108,7 +108,8 @@ int main()
 				{
 				case 1:
 					// 재고를 채울때, 일단은 전체를 다 채움
-					admin.get_product()->stock_fill();
+					for(int i = 0; i < 5; i++)
+						admin.get_product()[i].stock_fill();
 					break;
 				case 2:
 					admin.show_Data();
