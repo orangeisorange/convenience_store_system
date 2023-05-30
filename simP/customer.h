@@ -9,7 +9,7 @@ public:
     int points = 0;
     void setName(string newName);
     void changeName(string newName);
-    void setPoint(string name, int value);
+    void setPoint(int value);
     int showPoint();
     void registerUser(Customer& customer);
 };

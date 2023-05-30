@@ -4,7 +4,7 @@ using namespace std;
 
 map<int, int> day_income_pair;          // Used when using csv file.  <day(ex.230528), that day's whole income>
 map<string, int> product_income_pair;   // Used when using csv file.  <product_name, product's whole income>
-map<int, product *> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
+map<int, product*> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
 product receipt_product[5];					// product : show info what are you actually bought.
 int cur_day_receipt;
 
@@ -16,14 +16,16 @@ int show_main_screen() {
 		cout << "1. 주문 모드(고객님전용)" << endl;
 		cout << "2. 관리자 모드(점주님전용)" << endl;
 		cout << "3. 고객님의 편의점 계정 생성" << endl;
-		cout << "4. 종료 " << endl;
+		cout << "4. 고객님의 편의점 계정 삭제" << endl;
+		cout << "5. 종료 " << endl;
+		cout << "-->";
 		cin >> main_menu;
 		cin.ignore();
-		if (main_menu >= 1 && main_menu <= 4) return main_menu;
+		if (main_menu >= 1 && main_menu <= 5) return main_menu;
 		else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
 	}
 }
-void refresh_receipt_product(product *p)
+void refresh_receipt_product(product* p)
 {
 	p[0].change_name("과자");
 	p[0].stock_minus(5);
@@ -70,7 +72,9 @@ int main()
 	seller admin;
 	Service s1;
 	admin.init_csv();
+	admin.load_receipt();
 	init_product_income_map();
+	s1.load_customerList();
 	day_income_pair.insert(make_pair(admin.get_cur_date(), admin.get_income()));
 	int turn_off_system = 1;
 	while (turn_off_system)
@@ -97,7 +101,7 @@ int main()
 			}
 			cout << "관리자 모드입니다." << endl;
 			int seller_menu_breaker = 1;
-			while(seller_menu_breaker){
+			while (seller_menu_breaker) {
 				int seller_menu;
 				seller_menu = show_seller_screen();
 				switch (seller_menu)
@@ -122,11 +126,7 @@ int main()
 					break;
 				case 6:
 				{
-					cout << "환불하실 물품의 이름과 갯수를 입력해 주세요 " << endl;
-					string name;
-					int count;
-					cin >> name >> count;
-					admin.refund(name, count, admin.get_product());
+					admin.refund(admin.get_product());
 					break;
 				}
 				case 7:
@@ -140,20 +140,30 @@ int main()
 		case 3:
 		{
 			cout << "고객님의 성함을 입력해 주시면 계정이 만들어 집니다 !" << endl;
-			cout << "공백을 제외한 고객님의 성함을 입력해 주세요 ! " << endl;
+			cout << "공백을 제외한  성함을 입력해 주세요 ! " << endl;
 			string name_cus;
 			cin >> name_cus;
 			Customer tmp;
 			tmp.setName(name_cus);
 			s1.customerList.push_back(tmp);
+			cout << "고객 등록이 완료되었습니다.";
 			break;
 		}
 		case 4:
+		{
+			cout << "고객님의 성함을 입력해 주시면 계정이 삭제됩니다 !" << endl;
+			string name_del;
+			cin >> name_del;
+			s1.delName(name_del);
+			break;
+		}
+		case 5:
 			turn_off_system = 0;
 			break;
 		}
 
 	}
-
+	// before close the program, save the customer's info and receipts.
+	s1.save_customerList();
+	admin.save_receipt();
 }
-

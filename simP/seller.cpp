@@ -38,7 +38,7 @@ bool seller::check_Password(string pass_input) {
     else return false;
 }
 
-void seller::refund(string name, int n, product* p)
+void seller::refund(product* p)
 {
     cout << "환불하실 물품이 있는 영수증의 번호를 입력해 주세요." << endl;
     int tmp_receipt_num;
@@ -57,7 +57,7 @@ void seller::refund(string name, int n, product* p)
         for (int i = 0; i < 5; i++)
         {
             product_income_pair[receipt[tmp_receipt_num][i].get_name()] -= receipt[tmp_receipt_num][i].get_stock();
-            day_income_pair[tmp_receipt_num/1000] -= receipt[tmp_receipt_num][i].get_stock()* get_price(receipt[tmp_receipt_num][i].get_name());
+            day_income_pair[tmp_receipt_num / 1000] -= receipt[tmp_receipt_num][i].get_stock() * get_price(receipt[tmp_receipt_num][i].get_name());
         }
         receipt.erase(tmp_receipt_num);
         return;
@@ -67,6 +67,7 @@ void seller::refund(string name, int n, product* p)
         string tmp_product;
         cin >> tmp_product;
         cout << "환불할 갯수를 알려주세요 >>";
+        int isthere;
         int count;
         cin >> count;
         for (int i = 0; i < 5; i++)
@@ -76,7 +77,21 @@ void seller::refund(string name, int n, product* p)
                 receipt[tmp_receipt_num][i].stock_minus(count);
                 product_income_pair[tmp_product] -= count;
                 day_income_pair[tmp_receipt_num / 1000] -= count * get_price(receipt[tmp_receipt_num][i].get_name());
+                isthere = 1;
             }
+        }
+        if (isthere == 0) {
+            cout << "환불할 물품의 이름이 잘못 입력되었습니다." << endl;
+            continue;
+        }
+        else {
+            cout << "환불이 완료되었습니다. 더 환불할 것이 있으신가요? (y/n)" << endl;
+            char choice;
+            cin >> choice;
+            if (choice == 'y')
+                continue;
+            else
+                break;
         }
     }
 
@@ -84,9 +99,9 @@ void seller::refund(string name, int n, product* p)
 
 void seller::clear_seller_income() { this->income = 0; }
 
-product * seller::init_product_info()
+product* seller::init_product_info()
 {
-    product* p = new product[5]{product("과자"), product("삼각김밥"), product("커피"),product("담배"), product("빵")};
+    product* p = new product[5]{ product("과자"), product("삼각김밥"), product("커피"),product("담배"), product("빵") };
     return p;
 }
 
@@ -94,7 +109,7 @@ void seller::day_plus_one() {
     int year = this->cur_date / 10000;
     int month = (this->cur_date % 10000) / 100;
     int day = this->cur_date % 100;
-    
+
     int month_D[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
     if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
         month_D[1] = 29;
@@ -111,7 +126,7 @@ void seller::day_plus_one() {
 }
 
 // end_Day가 실행되면, 날짜가 다음날로 바뀜과 동시에, csv 파일 생성 또는 최신화.
-void seller::end_Day(product *p)
+void seller::end_Day(product* p)
 {
     cout << "다음 날로 변경합니다. ";
     for (int i = 0; i < 5; i++)
@@ -149,7 +164,7 @@ void seller::show_product()
     }
 }
 
-void seller::show_product(product *p)
+void seller::show_product(product* p)
 {
     cout.setf(ios::left);
     cout.width(12);
@@ -167,16 +182,16 @@ void seller::show_product(product *p)
 
 // 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수
 // 수정 필요. 실제로 값이 바뀌지가 않음.
-void seller::payment_complete(std::string name, int count, product* p, map<string, int> &sel_map, map<int, int> &pro_map)
+void seller::payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map, map<int, product*>& rec)
 {
-    for (int i = 0; i < 5; i++) 
+    for (int i = 0; i < 5; i++)
         if (p[i].get_name() == name) {
             p[i].stock_minus(count);
             income += this->get_price(p[i].get_name()) * count;
         }
     sel_map[name] = count;
     pro_map[cur_date] = income;
-    receipt.insert(make_pair(cur_day_receipt, receipt_product));
+    rec.insert(make_pair(cur_day_receipt, receipt_product));
     cur_day_receipt += 1;
 }
 
@@ -199,12 +214,14 @@ int seller::get_price(string name)
 void seller::init_csv()
 {
     // 파일이 없다면 파일 생성
-    ofstream fs("product_income.csv");
-    ofstream fs1("date_income.csv");
-    ofstream fs2("receipt.txt");
+    ofstream fs("product_income.csv",ios::out || ios::app);
+    ofstream fs1("date_income.csv", ios::out || ios::app);
+    ofstream fs2("receipt.txt", ios::out || ios::app);
+    ofstream fs3("customerList.txt", ios::out || ios::app);
     fs.close();
     fs1.close();
     fs2.close();
+    fs3.close();
 }
 
 void seller::load_product_csv()
@@ -217,8 +234,7 @@ void seller::load_product_csv()
         cout << "" << " 열기 오류" << endl;
     }
     product_income_pair.clear();
-    while (!fs.eof()) {
-        getline(fs, test, ',');
+    while (getline(fs, test, ',')) {
         name = test;
         getline(fs, test, ',');
         income = stoi(test);
@@ -237,8 +253,7 @@ void seller::load_date_csv()
         cout << "" << " 열기 오류" << endl;
     }
     day_income_pair.clear();
-    while (!fs.eof()) {
-        getline(fs, tmp, ',');
+    while (getline(fs, tmp, ',')) {
         date = stoi(tmp);
         getline(fs, tmp, ',');
         income = stoi(tmp);
@@ -270,15 +285,15 @@ void seller::load_receipt()
     string tmp;
     int receipt_day_num;
     int tmp_count;
-    product p[5];
+    product *p;
+    p = new product[5];
     fstream fs("receipt.txt", ios::in);
     if (!fs) {
         cout << "" << " 열기 오류" << endl;
     }
     receipt.clear();
-    while (!fs.eof()) {
+    while (getline(fs, tmp, ',')) {
         refresh_receipt_product(p);
-        getline(fs, tmp, ',');
         receipt_day_num = stoi(tmp);
         for (int i = 0; i < 5; i++)
         {
@@ -286,8 +301,9 @@ void seller::load_receipt()
             tmp_count = stoi(tmp);
             p[i].stock_plus(tmp_count);
         }
-    receipt.insert(make_pair(receipt_day_num, p));
-
+        
+        receipt.insert(make_pair(receipt_day_num, p));
+        cout << receipt[receipt_day_num][0].get_name();
     }
 }
 
@@ -299,7 +315,8 @@ void seller::save_receipt()
         fs << rct.first << ',';
         for (int i = 0; i < 5; i++)
         {
-            fs << rct.second[i].get_stock() << ',';
+            fs << rct.second[i].get_stock();
+            if (i != 4) fs << ',';
         }
         fs << '\n';
     }

@@ -17,7 +17,7 @@ void Customer::changeName(std::string newName) { //고객 이름 변경
     this->names = newName;
 }
 
-void Customer::setPoint(std::string name, int value) { //사용자 이름별 포인트 적립
+void Customer::setPoint(int value) { //사용자 이름별 포인트 적립
     this->points += value;
 }
 

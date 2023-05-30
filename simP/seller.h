@@ -36,7 +36,7 @@ public:
     void set_day_today();                           // make cur_date become today.
     product* get_product();
 
-    void refund(string name, int n, product *p);
+    void refund(product *p);
     // refund 의 경우는, 일단은 단순하게 구현하고, 영수증을 구현할 여력이 되면, 영수증을
     // 리스트나 뭐 아무거나로 구현해서 영수증 일련번호를 받아서 전체 환불을 진행하는 식으로 해볼까
 
@@ -45,7 +45,7 @@ public:
     void show_Data();                               // show all the product-income , date-income data.
     void show_product();
     void show_product(product* p);
-    void payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map); // Used when customer paying the product. product stock - count. this->income + product's
+    void payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map, map<int, product*>& rec); // Used when customer paying the product. product stock - count. this->income + product's
     int get_price(std::string name);                // return product's price. If the name of the product is nowhere to be found return 0
 
     void load_receipt();
