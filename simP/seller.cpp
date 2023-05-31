@@ -1,5 +1,8 @@
 #include "seller.h"
 
+
+
+// cur_date에 chrono 헤더파일등등을 통해서 YYMMDD 형식으로 변환한 오늘 날짜의 int 값을 넣어주는 함수
 void seller::set_day_today()
 {
     chrono::system_clock::time_point now = chrono::system_clock::now();
@@ -18,9 +21,10 @@ product* seller::get_product()
 seller::seller() {
     set_day_today();
     this->income = 0;
-    this->password = "1q2w3e4r!";
+    this->password = "1q2w3e4r!";       // seller 모드 비밀번호
     this->products = init_product_info();
-    cur_day_receipt = cur_date * 1000 + 1;
+    cur_day_receipt = cur_date * 1000 + 1;  // 형식이 ex)2305310001 이라서 이런 형식으로 제작.
+    // 하루에 영수증이 999개를 넘지 않는다고 가정하였음.
 }
 
 int seller::get_income()
@@ -33,6 +37,7 @@ int seller::get_cur_date()
     return cur_date;
 }
 
+// seller 모드에 진입할 때 암호 체크
 bool seller::check_Password(string pass_input) {
     if (this->password == pass_input) return true;
     else return false;
@@ -43,6 +48,7 @@ void seller::refund(product* p)
     cout << "환불하실 물품이 있는 영수증의 번호를 입력해 주세요." << endl;
     int tmp_receipt_num;
     cin >> tmp_receipt_num;
+    // 입력한 영수증 번호가 receipt map 상에 한개도 없다면 실행됨
     if (receipt.count(tmp_receipt_num) == 0)
     {
         cout << "입력한 영수증의 번호가 존재하지 않습니다!" << endl;
@@ -62,6 +68,7 @@ void seller::refund(product* p)
         receipt.erase(tmp_receipt_num);
         return;
     }
+    // 전부 환불하지 않는 경우
     while (1) {
         cout << "환불할 물품을 알려주세요 >>";
         string tmp_product;
@@ -70,6 +77,7 @@ void seller::refund(product* p)
         int isthere;
         int count;
         cin >> count;
+        // 환불할 물품의 이름과 갯수를 receipt map과 비교하여 환불한 만큼 삭제 + product_income_pair 맵과 day_income_pair 맵에서도 매출 삭제
         for (int i = 0; i < 5; i++)
         {
             if (tmp_product == receipt[tmp_receipt_num][i].get_name())
@@ -105,6 +113,7 @@ product* seller::init_product_info()
     return p;
 }
 
+// 윤년과 각 달마다 날짜가 다른것을 고려한 다음날로 넘어가주는 함수.
 void seller::day_plus_one() {
     int year = this->cur_date / 10000;
     int month = (this->cur_date % 10000) / 100;
@@ -138,6 +147,7 @@ void seller::end_Day(product* p)
     cur_day_receipt = cur_date * 1000 + 1;
 }
 
+// 저장되있는 매출을 보여줌(상품마다 와 날짜마다로 구분하였음)
 void seller::show_Data() {
     for (const auto& product : product_income_pair) {
         cout << "상품 명 : " << product.first << "의 매출은 " << product.second * get_price(product.first) << "원" << endl;
@@ -180,7 +190,9 @@ void seller::show_product(product* p)
     }
 }
 
-void seller::payment_complete(string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map)
+// 결제가 완료되었을 때, seller의 income에 더해줘서 전체 매출을 계산할 수 있게 하며,
+// product_income_pair 맵의 상품별 매출을 최신화 해줌.
+void seller::payment_complete(string name, int count, product* p, map<string, int>& pro_map)
 {
     for (int i = 0; i < 5; i++) {
         if (p[i].get_name() == name) {
@@ -188,7 +200,7 @@ void seller::payment_complete(string name, int count, product* p, map<string, in
             income += (this->get_price(p[i].get_name()) * count);
         }
     }
-    sel_map[name] += count;
+    pro_map[name] += count;
 }
 
 int seller::get_price(string name)
@@ -207,6 +219,7 @@ int seller::get_price(string name)
         return 0;
 }
 
+// 처음프로그램 구동시, 파일이 프로젝트 안에 존재하지 않는다면 파일을 생성해주는 함수.
 void seller::init_csv()
 {
     // 파일이 없다면 파일 생성
@@ -301,7 +314,7 @@ void seller::load_receipt()
     }
     receipt.clear();
     while (getline(fs, tmp, ',')) {
-        refresh_receipt_product(p);
+        p->refresh_receipt_product(p);
         receipt_day_num = stoi(tmp);
         if ( receipt_day_num == 0) break;
         for (int i = 0; i < 5; i++)
@@ -332,6 +345,7 @@ void seller::save_receipt()
     }
 }
 
+// receipt 맵 내부에 있는 모든 영수증을 출력해 주는 함수
 void seller::show_all_receipt()
 {
     for (auto& rct : receipt)

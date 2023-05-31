@@ -15,7 +15,6 @@ extern map<std::string, int> product_income_pair;
 extern map<int, product*> receipt;
 extern int cur_day_receipt;
 extern product receipt_product[5];
-extern void refresh_receipt_product(product* p);
 
 
 class seller {
@@ -42,7 +41,7 @@ public:
     void show_Data();                               // show all the product-income , date-income data.
     void show_product();                            // 재고 보여줄 때 사용
     void show_product(product* p);                  // 재고 이외의 다른 product형 변수를 보여줄 때 사용
-    void payment_complete(std::string name, int count, product* p, map<string, int>& sel_map); // Used when customer paying the product. product stock - count. this->income + product's
+    void payment_complete(std::string name, int count, product* p, map<string, int>& pro_map); // Used when customer paying the product. product stock - count. this->income + product's
     int get_price(std::string name);                // return product's price. If the name of the product is nowhere to be found return 0
 
     // 영수증 관련 함수.

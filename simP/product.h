@@ -8,11 +8,13 @@ class product {
 public:
     product(string name);  // 
     product();
+
+    void refresh_receipt_product(product* p);   // refresh_product(for receipt)
     void stock_fill();          // filling stock up to five
     bool stock_minus(int num);  // stock minus num. if num > stock return false
     void stock_plus(int num);   // stock plus num. this function is used when refund is made
     void change_name(std::string new_name);     // change product name.
     string get_name();                     // return product name.
     int get_stock();                       // return product stock(remain).
-    void set_stock_zero();
+    void set_stock_zero();                  // set stock zero (refresh)
 };

@@ -5,7 +5,7 @@ using namespace std;
 extern product receipt_product[5];					// product : show info what are you actually bought.
 extern map<int, product*> receipt;				// int type(Ex. 영수증 번호 230529001: 23.05.29 첫번째 고객의 영수증.) 
 extern int cur_day_receipt;
-
+extern map<string, int> product_income_pair;
 
 void Service::delName(std::string name) { //포인트 이용 고객 정보 삭제 함수
     int idx = this->check_Name(name); //이름 유무 확인
@@ -180,6 +180,7 @@ void Service::save_customerList()
     }
 }
 
+// customerlist 를 불러오는 함수. 프로그램이 시작 될 때, 실행되어야 함.
 void Service::load_customerList()
 {
     string tmp;
@@ -201,3 +202,49 @@ void Service::load_customerList()
         customerList.push_back(c1);
     }
 }
+
+
+int Service::show_main_screen() {
+    while (1)
+    {
+        int main_menu;
+        cout << "\n편의점 서비스에 오신 것을 환영합니다." << endl;
+        cout << "1. 주문 모드(고객님전용)" << endl;
+        cout << "2. 관리자 모드(점주님전용)" << endl;
+        cout << "3. 고객님의 편의점 계정 생성" << endl;
+        cout << "4. 고객님의 편의점 계정 삭제" << endl;
+        cout << "5. 종료 " << endl;
+        cout << "-->";
+        cin >> main_menu;
+        cin.ignore();
+        if (main_menu >= 1 && main_menu <= 5) return main_menu;
+        else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
+    }
+}
+
+void Service::init_product_income_map()
+{
+    product_income_pair.insert(make_pair("과자", 0));
+    product_income_pair.insert(make_pair("삼각김밥", 0));
+    product_income_pair.insert(make_pair("커피", 0));
+    product_income_pair.insert(make_pair("담배", 0));
+    product_income_pair.insert(make_pair("빵", 0));
+}
+int Service::show_seller_screen() {
+    while (1)
+    {
+        int  seller_menu;
+        cout << "\n1. 재고 채우기" << endl;
+        cout << "2. 현재까지의 매출 출력" << endl;
+        cout << "3. csv 파일 불러오기" << endl;
+        cout << "4. csv 파일에 저장하기" << endl;
+        cout << "5. 오늘의 영업 종료하기" << endl;
+        cout << "6. 환불" << endl;
+        cout << "7. 전체 영수증 출력" << endl;
+        cout << "8. 상위 메뉴로" << endl;
+        cin >> seller_menu;
+        if (seller_menu >= 1 && seller_menu <= 8) return seller_menu;
+        else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
+    }
+}
+

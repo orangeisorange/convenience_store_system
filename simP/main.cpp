@@ -8,86 +8,30 @@ map<int, product*> receipt;				// int type(Ex.230529001 23.05.29 1th customer's 
 product receipt_product[5];					// product : show info what are you actually bought.
 int cur_day_receipt;
 
-int show_main_screen() {
-	while (1)
-	{
-		int main_menu;
-		cout << "\n편의점 서비스에 오신 것을 환영합니다." << endl;
-		cout << "1. 주문 모드(고객님전용)" << endl;
-		cout << "2. 관리자 모드(점주님전용)" << endl;
-		cout << "3. 고객님의 편의점 계정 생성" << endl;
-		cout << "4. 고객님의 편의점 계정 삭제" << endl;
-		cout << "5. 종료 " << endl;
-		cout << "-->";
-		cin >> main_menu;
-		cin.ignore();
-		if (main_menu >= 1 && main_menu <= 5) return main_menu;
-		else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
-	}
-}
-void refresh_receipt_product(product* p)
-{
-	p[0].change_name("과자");
-	p[0].set_stock_zero();
-	p[1].change_name("삼각김밥");
-	p[1].set_stock_zero();
-	p[2].change_name("커피");
-	p[2].set_stock_zero();
-	p[3].change_name("담배");
-	p[3].set_stock_zero();
-	p[4].change_name("빵");
-	p[4].set_stock_zero();
-}
-
-void init_product_income_map()
-{
-	product_income_pair.insert(make_pair("과자", 0));
-	product_income_pair.insert(make_pair("삼각김밥", 0));
-	product_income_pair.insert(make_pair("커피", 0));
-	product_income_pair.insert(make_pair("담배", 0));
-	product_income_pair.insert(make_pair("빵", 0));
-}
-int show_seller_screen() {
-	while (1)
-	{
-		int  seller_menu;
-		cout << "\n1. 재고 채우기" << endl;
-		cout << "2. 현재까지의 매출 출력" << endl;
-		cout << "3. csv 파일 불러오기" << endl;
-		cout << "4. csv 파일에 저장하기" << endl;
-		cout << "5. 오늘의 영업 종료하기" << endl;
-		cout << "6. 환불" << endl;
-		cout << "7. 전체 영수증 출력" << endl;
-		cout << "8. 상위 메뉴로" << endl;
-		cin >> seller_menu;
-		if (seller_menu >= 1 && seller_menu <= 8) return seller_menu;
-		else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
-	}
-}
 
 int main()
 {
 	seller admin;
 	Service s1;
-	admin.init_csv();
-	admin.load_receipt();
-	init_product_income_map();
-	s1.load_customerList();
+	admin.init_csv();			// 프로그램에 필요한 파일 존재하는지 체크 및 없으면 생성
+	admin.load_receipt();		// 영수증 파일 load
+	s1.init_product_income_map();	// product_income_map초기화
+	s1.load_customerList();		// 고객 리스트 load
 	day_income_pair.insert(make_pair(admin.get_cur_date(), admin.get_income()));
-	int turn_off_system = 1;
+	int turn_off_system = 1;	// turn_off_system이 0이면 프로그램종료
 	while (turn_off_system)
 	{
 		int main_menu;
-		main_menu = show_main_screen();
+		main_menu = s1.show_main_screen();
 		switch (main_menu)
 		{
-		case 1:
+		case 1:		// 주문하기
 		{
-			refresh_receipt_product(receipt_product);
+			admin.get_product()->refresh_receipt_product(receipt_product);
 			s1.order(admin);
 			break;
 		}
-		case 2:
+		case 2:		// seller 모드 비밀번호는 1q2w3e4r!
 		{
 			cout << "비밀번호를 입력해 주세요 " << endl;
 			string input_pass;
@@ -97,15 +41,16 @@ int main()
 				cout << "비밀번호 오류입니다." << endl;
 				break;
 			}
+			// 비밀번호를 통과한 경우
 			cout << "관리자 모드입니다." << endl;
 			int seller_menu_breaker = 1;
 			while (seller_menu_breaker) {
 				int seller_menu;
-				seller_menu = show_seller_screen();
+				seller_menu = s1.show_seller_screen();
 				switch (seller_menu)
 				{
 				case 1:
-					// 재고를 채울때, 일단은 전체를 다 채움
+					// 재고를 채울때, 전체를 다 채움(총량 5개)
 					for (int i = 0; i < 5; i++)
 						admin.get_product()[i].stock_fill();
 					break;
