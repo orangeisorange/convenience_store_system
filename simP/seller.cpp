@@ -230,7 +230,7 @@ void seller::init_csv()
     if (!fs3) {
         ofstream fs3("customerList.txt", ios::out);
     }
-    fs.close(); 
+    fs.close();
     fs1.close();
     fs2.close();
     fs3.close();
@@ -297,7 +297,7 @@ void seller::load_receipt()
     string tmp;
     int receipt_day_num;
     int tmp_count;
-    product *p;
+    product* p;
     p = new product[5];
     fstream fs("receipt.txt", ios::in);
     if (!fs) {
@@ -313,7 +313,7 @@ void seller::load_receipt()
             tmp_count = stoi(tmp);
             p[i].stock_plus(tmp_count);
         }
-        
+
         receipt.insert(make_pair(receipt_day_num, p));
     }
 }

@@ -3,13 +3,12 @@
 using namespace std;
 
 extern product receipt_product[5];					// product : show info what are you actually bought.
-extern map<int, product*> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
-extern product receipt_product[5];
+extern map<int, product*> receipt;				// int type(Ex. ¿µ¼öÁõ ¹øÈ£ 230529001: 23.05.29 Ã¹¹øÂ° °í°´ÀÇ ¿µ¼öÁõ.) 
 extern int cur_day_receipt;
 
 
-void Service::delName(std::string name) { //Æ÷ÀÎÆ®¸¦ ´Ù ½èÀ» °æ¿ì °í°´ÀÌ¸§ »èÁ¦ --> ¾ÆÁ÷ ¾È³ÖÀ½
-    int idx = this->check_Name(name);
+void Service::delName(std::string name) { //Æ÷ÀÎÆ® ÀÌ¿ë °í°´ Á¤º¸ »èÁ¦ ÇÔ¼ö
+    int idx = this->check_Name(name); //ÀÌ¸§ À¯¹« È®ÀÎ
     if (idx != -1) {
         this->customerList.erase(customerList.begin() + idx);
         cout << "»èÁ¦°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.";
@@ -18,10 +17,10 @@ void Service::delName(std::string name) { //Æ÷ÀÎÆ®¸¦ ´Ù ½èÀ» °æ¿ì °í°´ÀÌ¸§ »èÁ¦ 
         cout << "ÇØ´çÇÏ´Â ÀÌ¸§ÀÇ °í°´ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.";
 }
 
-int Service::check_Name(string name)
+int Service::check_Name(string name) //Æ÷ÀÎÆ® ÀÌ¿ë ¶Ç´Â Àû¸³ ½Ã, ÀÔ·Â¹ÞÀº ÀÌ¸§ÀÌ µî·ÏµÇ¾î ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
 {
-    int size = this->customerList.size();
-    for (int i = 0; i < size; i++)
+    int size = this->customerList.size(); //µî·Ï °í°´ ¸í¼ö È®ÀÎ
+    for (int i = 0; i < size; i++) //customerList¿¡ ÇØ´ç ÀÌ¸§ÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ±â À©ÇÑ for¹®
     {
         if (this->customerList.at(i).names == name)
             return i;
@@ -29,11 +28,11 @@ int Service::check_Name(string name)
     return -1;
 }
 
-void Service::getPoint(std::string name, int amount) //Æ÷ÀÎÆ® Àû¸³ (amount ¾ÈÁ¤ÇÔ)
+void Service::getPoint(std::string name, int amount) //Æ÷ÀÎÆ® Àû¸³ ÇÔ¼ö
 {
     int idx = this->check_Name(name);
     if (idx != -1) {
-        this->customerList.at(idx).points += amount;
+        this->customerList.at(idx).points += amount; //ÇØ´ç °í°´ Æ÷ÀÎÆ® Áõ°¡
         cout << "Àû¸³ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.";
     }
     else {
@@ -44,7 +43,7 @@ void Service::getPoint(std::string name, int amount) //Æ÷ÀÎÆ® Àû¸³ (amount ¾ÈÁ¤Ç
 }
 
 
-void Service::usePoint(std::string name) { //°áÁ¦
+void Service::usePoint(std::string name) { //»óÇ° °áÁ¦ Áß, Æ÷ÀÎÆ® °áÁ¦ ÇÔ¼ö
     int size = this->customerList.size();
     int point;
     int idx = this->check_Name(name);
@@ -77,43 +76,38 @@ void Service::usePoint(std::string name) { //°áÁ¦
 
 }
 
-void Service::addPoint(int amount, int idx_at)
-{
-    this->customerList.at(idx_at).points += amount;
-}
-
-void Service::subPoint(int amount, int idx_at)
+void Service::subPoint(int amount, int idx_at) //Æ÷ÀÎÆ® °áÁ¦ ½Ã, Æ÷ÀÎÆ® Â÷°¨ ÇÔ¼ö
 {
     this->customerList.at(idx_at).points += amount;
 }
 
 
-void Service::useCard() {
+void Service::useCard() { //Ä«µå °áÁ¦ ÇÔ¼ö
     cout << "°áÁ¦°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù." << endl;
 }
 
 void Service::order(seller admin) {
     cout << "»óÇ°À» ¼±ÅÃÇØÁÖ¼¼¿ä" << endl;
-    admin.show_product();
-    string pointcustomer;
+    admin.show_product(); //»óÇ° ÇöÈ² Ãâ·Â
+    string pointcustomer; //°í°´ ÀÌ¸§ ÀÔ·Â¹Þ±â À§ÇÑ º¯¼ö
     int num = 0;
     string buyproduct[100];
     int buystock[100] = { 0 };
     char choice;
-    int sum = 0;
+    int sum = 0; //ÃÑ °áÁ¦ ±Ý¾× º¯¼ö
     while (true) {
         cout << "»óÇ°¸í: ";
         cin >> buyproduct[num];
         cout << "¼ö·®: ";
         cin >> buystock[num];
         for (int i = 0; i < 5; i++)
-            if (receipt_product[i].get_name() == buyproduct[num])
-                receipt_product[i].stock_plus(buystock[num]);
+            if (receipt_product[i].get_name() == buyproduct[num]) //»óÇ°¸í È®ÀÎ¿ë
+                receipt_product[i].stock_plus(buystock[num]); //»óÇ° ¼ö·® È®ÀÎ¿ë
         cout << "´õ ÁÖ¹®ÇÏ½Ã°Ú½À´Ï±î? (y/n)";
         cin >> choice;
         if (choice == 'y') {
-            sum += admin.get_price(buyproduct[num]) * buystock[num];
-            num++;
+            sum += admin.get_price(buyproduct[num]) * buystock[num]; //¼öÀÍ °è»ê
+            num++; //index Áõ°¡
             continue;
         }
         else {
@@ -126,20 +120,20 @@ void Service::order(seller admin) {
     if (choice == 'y') {
         cout << "°í°´ ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä: ";
         cin >> pointcustomer;
-        usePoint(pointcustomer);
+        usePoint(pointcustomer); //Æ÷ÀÎÆ® »ç¿ë ÇÔ¼ö È£Ãâ
     }
     else
         useCard();
     for (int i = 0; i <= num; i++) {
         cout << buyproduct[i] << endl;
-        admin.payment_complete(buyproduct[i], buystock[i], admin.get_product(), product_income_pair, day_income_pair,receipt );
+        admin.payment_complete(buyproduct[i], buystock[i], admin.get_product(), product_income_pair, day_income_pair, receipt); //±¸¸Å ¿Ï·á½Ã °¢Á¾ Á¤º¸µé ÀúÀåÇÏ´Â ÇÔ¼ö È£Ãâ
     }
     cout << "Æ÷ÀÎÆ®¸¦ Àû¸³ÇÏ½Ã°Ú½À´Ï±î?(y/n): ";
     cin >> choice;
     if (choice == 'y') {
         cout << "°í°´ ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä: ";
         cin >> pointcustomer;
-        getPoint(pointcustomer, sum * 0.1);
+        getPoint(pointcustomer, sum * 0.1); //°áÁ¦ ±Ý¾×ÀÇ 10% Àû¸³
     }
     else
         cout << "°¨»çÇÕ´Ï´Ù";
@@ -176,9 +170,8 @@ void Service::load_customerList()
         c1.setPoint(tmp_inc);
         customerList.push_back(c1);
     }
-
 }
 
+void Service::printReceipt() {
 
-
-
+}

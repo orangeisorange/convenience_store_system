@@ -11,5 +11,4 @@ public:
     void changeName(string newName);
     void setPoint(int value);
     int showPoint();
-    void registerUser(Customer& customer);
 };

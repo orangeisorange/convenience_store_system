@@ -87,6 +87,7 @@ int main()
 		{
 			refresh_receipt_product(receipt_product);
 			s1.order(admin);
+			//s1.printReceipt();
 			break;
 		}
 		case 2:
@@ -108,7 +109,7 @@ int main()
 				{
 				case 1:
 					// 재고를 채울때, 일단은 전체를 다 채움
-					for(int i = 0; i < 5; i++)
+					for (int i = 0; i < 5; i++)
 						admin.get_product()[i].stock_fill();
 					break;
 				case 2:

@@ -11,23 +11,23 @@ using namespace std;
 
 extern map<int, int> day_income_pair;
 extern map<std::string, int> product_income_pair;
-extern map<int, product *> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
+extern map<int, product*> receipt;				// int type(Ex.230529001 23.05.29 1th customer's receipt.) 
 // product : show info what are you actually bought.
 extern int cur_day_receipt;
 extern product receipt_product[5];
-extern void refresh_receipt_product(product *p);
+extern void refresh_receipt_product(product* p);
 
 
-class seller{
-//    std::map<int, int> day_income_pair;             // Used when using csv file.  <day(ex.230528), that day's whole income>
+class seller {
+    //    std::map<int, int> day_income_pair;             // Used when using csv file.  <day(ex.230528), that day's whole income>
     std::string password;                           // seller mode is basically restricted. password is 1q2we3e4r!
     int cur_date;                                   // Date on the system. It might not be today.
     int income;                                     // daily whole income
     product* products;                              // product pointer. there are 5 product in this convenience store
 public:
-//    std::map<std::string, int> product_income_pair; // Used when using csv file.  <product_name, product's whole income>
+    //    std::map<std::string, int> product_income_pair; // Used when using csv file.  <product_name, product's whole income>
     product* init_product_info();                    // init product array and return address
-//    void init_product_income_map();                 // init product_map
+    //    void init_product_income_map();                 // init product_map
     seller();                                       // seller init
     int get_income();
     int get_cur_date();
@@ -36,7 +36,7 @@ public:
     void set_day_today();                           // make cur_date become today.
     product* get_product();
 
-    void refund(product *p);
+    void refund(product* p);
     // refund 의 경우는, 일단은 단순하게 구현하고, 영수증을 구현할 여력이 되면, 영수증을
     // 리스트나 뭐 아무거나로 구현해서 영수증 일련번호를 받아서 전체 환불을 진행하는 식으로 해볼까
 
@@ -51,7 +51,7 @@ public:
     void load_receipt();
     void save_receipt();
 
-/* below this line is all about csv management. These are used when end of day or save or load the data*/
+    /* below this line is all about csv management. These are used when end of day or save or load the data*/
     void init_csv();
     void load_product_csv();
     void load_date_csv();

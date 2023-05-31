@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-class product{
+class product {
     string p_name; // name of product
     int stock;          // stock of product. The number of basic stocks is five
 public:
