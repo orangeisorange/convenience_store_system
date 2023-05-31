@@ -180,8 +180,6 @@ void seller::show_product(product* p)
     }
 }
 
-// 결제 완료 되었을 경우, 이 함수 호출. 인자는 상품명, 상품 갯수
-// 수정 필요. 실제로 값이 바뀌지가 않음.
 void seller::payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map, map<int, product*>& rec)
 {
     for (int i = 0; i < 5; i++)
@@ -193,6 +191,7 @@ void seller::payment_complete(std::string name, int count, product* p, map<strin
     pro_map[cur_date] = income;
     rec.insert(make_pair(cur_day_receipt, receipt_product));
     cur_day_receipt += 1;
+    // 밑에 영수증 출력하는 것 만들어야 함.
 }
 
 int seller::get_price(string name)
@@ -332,3 +331,8 @@ void seller::save_receipt()
         fs << '\n';
     }
 }
+
+void seller::show_all_receipt()
+{
+}
+

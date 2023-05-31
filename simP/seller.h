@@ -50,6 +50,7 @@ public:
 
     void load_receipt();
     void save_receipt();
+    void show_all_receipt();
 
     /* below this line is all about csv management. These are used when end of day or save or load the data*/
     void init_csv();

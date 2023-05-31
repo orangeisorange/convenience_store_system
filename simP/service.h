@@ -14,5 +14,4 @@ public:
     void order(seller admin); //전체적인 주문시스템 구현 함수
     void save_customerList(); //고객 리스트 저장 함수
     void load_customerList(); //고객 리스트 로드 함수
-    // void printReceipt();
 };

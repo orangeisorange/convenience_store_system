@@ -171,7 +171,3 @@ void Service::load_customerList()
         customerList.push_back(c1);
     }
 }
-
-void Service::printReceipt() {
-
-}
