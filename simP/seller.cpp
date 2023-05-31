@@ -142,9 +142,8 @@ void seller::end_Day(product* p)
     {
         p[i].stock_fill();
     }
-    day_plus_one();
-    day_income_pair.insert(make_pair(get_cur_date(), get_income()));
-    cur_day_receipt = cur_date * 1000 + 1;
+    day_plus_one();                                                 // 그 다음날로 넘어가는 함수
+    cur_day_receipt = cur_date * 1000 + 1;                          // cur_day_receipt 를 그 다음날의 YYMMDD001로 초기화 함
 }
 
 // 저장되있는 매출을 보여줌(상품마다 와 날짜마다로 구분하였음)
@@ -348,7 +347,7 @@ void seller::save_receipt()
 // receipt 맵 내부에 있는 모든 영수증을 출력해 주는 함수
 void seller::show_all_receipt()
 {
-    for (auto& rct : receipt)
+    for (const auto& rct : receipt)
     {
         int tot = 0;
         cout << "------------------------------------------" << endl;
