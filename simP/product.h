@@ -14,5 +14,5 @@ public:
     void change_name(std::string new_name);     // change product name.
     string get_name();                     // return product name.
     int get_stock();                       // return product stock(remain).
-
+    void set_stock_zero();
 };

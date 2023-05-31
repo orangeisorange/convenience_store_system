@@ -180,18 +180,15 @@ void seller::show_product(product* p)
     }
 }
 
-void seller::payment_complete(std::string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map, map<int, product*>& rec)
+void seller::payment_complete(string name, int count, product* p, map<string, int>& sel_map, map<int, int>& pro_map)
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
         if (p[i].get_name() == name) {
             p[i].stock_minus(count);
-            income += this->get_price(p[i].get_name()) * count;
+            income += (this->get_price(p[i].get_name()) * count);
         }
-    sel_map[name] = count;
-    pro_map[cur_date] = income;
-    rec.insert(make_pair(cur_day_receipt, receipt_product));
-    cur_day_receipt += 1;
-    // 밑에 영수증 출력하는 것 만들어야 함.
+    }
+    sel_map[name] += count;
 }
 
 int seller::get_price(string name)
@@ -238,7 +235,7 @@ void seller::init_csv()
 void seller::load_product_csv()
 {
     string name;
-    int income;
+    int income1;
     string test;
     fstream fs("product_income.csv", ios::in);
     if (!fs) {
@@ -248,8 +245,8 @@ void seller::load_product_csv()
     while (getline(fs, test, ',')) {
         name = test;
         getline(fs, test, ',');
-        income = stoi(test);
-        product_income_pair.insert(make_pair(name, income));
+        income1 = stoi(test);
+        product_income_pair.insert(make_pair(name, income1));
     }
 }
 
@@ -257,7 +254,7 @@ void seller::load_product_csv()
 void seller::load_date_csv()
 {
     int date;
-    int income;
+    int income1;
     string tmp;
     fstream fs("date_income.csv", ios::in);
     if (!fs) {
@@ -267,8 +264,8 @@ void seller::load_date_csv()
     while (getline(fs, tmp, ',')) {
         date = stoi(tmp);
         getline(fs, tmp, ',');
-        income = stoi(tmp);
-        day_income_pair.insert(make_pair(date, income));
+        income1 = stoi(tmp);
+        day_income_pair.insert(make_pair(date, income1));
     }
 }
 
@@ -306,6 +303,7 @@ void seller::load_receipt()
     while (getline(fs, tmp, ',')) {
         refresh_receipt_product(p);
         receipt_day_num = stoi(tmp);
+        if ( receipt_day_num == 0) break;
         for (int i = 0; i < 5; i++)
         {
             getline(fs, tmp, ',');
@@ -314,6 +312,8 @@ void seller::load_receipt()
         }
 
         receipt.insert(make_pair(receipt_day_num, p));
+        if(cur_day_receipt < receipt_day_num)
+            cur_day_receipt = receipt_day_num + 1;
     }
 }
 
@@ -334,5 +334,21 @@ void seller::save_receipt()
 
 void seller::show_all_receipt()
 {
+    for (auto& rct : receipt)
+    {
+        int tot = 0;
+        cout << "------------------------------------------" << endl;
+        cout << "영수증 일련번호 : " << rct.first << endl;
+        for (int i = 0; i < 5; i++)
+        {
+            if (rct.second[i].get_stock() != 0)
+            {
+                cout << rct.second[i].get_name() << " : " << rct.second[i].get_stock() << "개" << endl;
+                tot += (rct.second[i].get_stock() * get_price(rct.second[i].get_name()));
+            }
+        }
+        cout << "총 계 : " << tot << "원" << endl;
+        cout << "------------------------------------------" << endl;
+    }
 }
 

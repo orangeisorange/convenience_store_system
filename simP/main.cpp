@@ -12,7 +12,7 @@ int show_main_screen() {
 	while (1)
 	{
 		int main_menu;
-		cout << "편의점 서비스에 오신 것을 환영합니다." << endl;
+		cout << "\n편의점 서비스에 오신 것을 환영합니다." << endl;
 		cout << "1. 주문 모드(고객님전용)" << endl;
 		cout << "2. 관리자 모드(점주님전용)" << endl;
 		cout << "3. 고객님의 편의점 계정 생성" << endl;
@@ -28,20 +28,17 @@ int show_main_screen() {
 void refresh_receipt_product(product* p)
 {
 	p[0].change_name("과자");
-	p[0].stock_minus(5);
+	p[0].set_stock_zero();
 	p[1].change_name("삼각김밥");
-	p[1].stock_minus(5);
+	p[1].set_stock_zero();
 	p[2].change_name("커피");
-	p[2].stock_minus(5);
+	p[2].set_stock_zero();
 	p[3].change_name("담배");
-	p[3].stock_minus(5);
+	p[3].set_stock_zero();
 	p[4].change_name("빵");
-	p[4].stock_minus(5);
+	p[4].set_stock_zero();
 }
-void insert_receipt()
-{
-	receipt.insert(make_pair(cur_day_receipt, receipt_product));
-}
+
 void init_product_income_map()
 {
 	product_income_pair.insert(make_pair("과자", 0));
@@ -54,15 +51,16 @@ int show_seller_screen() {
 	while (1)
 	{
 		int  seller_menu;
-		cout << "1. 재고 채우기" << endl;
+		cout << "\n1. 재고 채우기" << endl;
 		cout << "2. 현재까지의 매출 출력" << endl;
 		cout << "3. csv 파일 불러오기" << endl;
 		cout << "4. csv 파일에 저장하기" << endl;
 		cout << "5. 오늘의 영업 종료하기" << endl;
 		cout << "6. 환불" << endl;
-		cout << "7. 상위 메뉴로" << endl;
+		cout << "7. 전체 영수증 출력" << endl;
+		cout << "8. 상위 메뉴로" << endl;
 		cin >> seller_menu;
-		if (seller_menu >= 1 && seller_menu <= 7) return seller_menu;
+		if (seller_menu >= 1 && seller_menu <= 8) return seller_menu;
 		else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
 	}
 }
@@ -87,7 +85,6 @@ int main()
 		{
 			refresh_receipt_product(receipt_product);
 			s1.order(admin);
-			//s1.printReceipt();
 			break;
 		}
 		case 2:
@@ -132,6 +129,9 @@ int main()
 					break;
 				}
 				case 7:
+					admin.show_all_receipt();
+					break;
+				case 8:
 					seller_menu_breaker = 0;
 					break;
 				}

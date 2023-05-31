@@ -126,7 +126,7 @@ void Service::order(seller admin) {
         useCard();
     for (int i = 0; i <= num; i++) {
         cout << buyproduct[i] << endl;
-        admin.payment_complete(buyproduct[i], buystock[i], admin.get_product(), product_income_pair, day_income_pair, receipt); //구매 완료시 각종 정보들 저장하는 함수 호출
+        admin.payment_complete(buyproduct[i], buystock[i], admin.get_product(), product_income_pair); //구매 완료시 각종 정보들 저장하는 함수 호출
     }
     cout << "포인트를 적립하시겠습니까?(y/n): ";
     cin >> choice;
@@ -138,8 +138,38 @@ void Service::order(seller admin) {
     else
         cout << "감사합니다";
 
+    // 장바구니에 담긴 것을 따로 깊은 복사를 하고, receipt map에 저장
+    product* deep_copy_receipt_product = new product[5];
+    for (int i = 0; i < 5; i++)
+    {
+        deep_copy_receipt_product[i].change_name(receipt_product[i].get_name());
+        deep_copy_receipt_product[i].set_stock_zero();
+        deep_copy_receipt_product[i].stock_plus(receipt_product[i].get_stock());
+    }
+    receipt.insert(make_pair(cur_day_receipt, deep_copy_receipt_product));
+
+    // 구매 완료 후, 사용자에게 보여주는 영수증
+    cout << "\n영수증" << endl;
+    int tot = 0;
+    cout << "------------------------------------------" << endl;
+    cout << "영수증 일련번호 : " << cur_day_receipt << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        if (receipt[cur_day_receipt][i].get_stock() != 0)
+        {
+            cout << receipt[cur_day_receipt][i].get_name() << " : " << receipt[cur_day_receipt][i].get_stock() << "개" << endl;
+            tot += (receipt[cur_day_receipt][i].get_stock() * admin.get_price(receipt[cur_day_receipt][i].get_name()));
+        }
+    }
+    cout << "총 계 : " << tot << "원" << endl;
+    day_income_pair[admin.get_cur_date()] += admin.get_income();
+    cout << "------------------------------------------" << endl << endl;
+    // 다음 영수증번호는 원래 영수증 번호 + 1 하여 겹치지 않도록 함
+    cur_day_receipt += 1;
+
 }
 
+// 저장 형식 : 이름,포인트
 void Service::save_customerList()
 {
     ofstream fs("customerList.txt", ios::out);

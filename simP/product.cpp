@@ -44,3 +44,8 @@ int product::get_stock()
 {
 	return stock;
 }
+
+void product::set_stock_zero()
+{
+	this->stock = 0;
+}
