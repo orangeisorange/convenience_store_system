@@ -47,11 +47,11 @@ void Service::usePoint(std::string name) { //상품 결제 중, 포인트 결제 함수
     int size = this->customerList.size();
     int point;
     int idx = this->check_Name(name);
-    point = customerList.at(idx).points;
     if (idx == -1) {
         cout << "해당하는 이름의 고객이 존재하지 않습니다." << endl;
         return;
     }
+    point = customerList.at(idx).points;
     cout << "잔여 포인트" << point << endl;
 
     if (point > 0) {
@@ -247,4 +247,3 @@ int Service::show_seller_screen() {
         else cout << "잘못된 입력입니다. 다시 입력해 주세요 " << endl << endl;
     }
 }
-
