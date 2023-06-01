@@ -105,8 +105,6 @@ void seller::refund(product* p)
 
 }
 
-void seller::clear_seller_income() { this->income = 0; }
-
 product* seller::init_product_info()
 {
     product* p = new product[5]{ product("°úÀÚ"), product("»ï°¢±è¹ä"), product("Ä¿ÇÇ"),product("´ã¹è"), product("»§") };
@@ -306,13 +304,13 @@ void seller::load_receipt()
     int receipt_day_num;
     int tmp_count;
     product* p;
-    p = new product[5];
     fstream fs("receipt.txt", ios::in);
     if (!fs) {
         cout << "" << " ¿­±â ¿À·ù" << endl;
     }
     receipt.clear();
     while (getline(fs, tmp, ',')) {
+        p = new product[5];
         p->refresh_receipt_product(p);
         receipt_day_num = stoi(tmp);
         if ( receipt_day_num == 0) break;

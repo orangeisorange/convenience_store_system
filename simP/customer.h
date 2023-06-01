@@ -8,7 +8,6 @@ public:
     string names;
     int points = 0;
     void setName(string newName);
-    void changeName(string newName);
     void setPoint(int value);
     int showPoint();
 };

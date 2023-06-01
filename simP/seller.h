@@ -23,14 +23,11 @@ class seller {
     int income;                                     // daily whole income
     product* products;                              // product pointer. there are 5 product in this convenience store
 public:
-    //    std::map<std::string, int> product_income_pair; // Used when using csv file.  <product_name, product's whole income>
     product* init_product_info();                    // init product array and return address
-    //    void init_product_income_map();                 // init product_map
     seller();                                       // seller init
     int get_income();                               // give income
     int get_cur_date();                             // give cur_date
     void day_plus_one();                            // when end of day, this is used. cur_date + 1
-    void clear_seller_income();                     // when end of day, this is used. income become 0
     void set_day_today();                           // make cur_date become today.
     product* get_product();                         // seller가 가진 product의 주소를 반환해줌
 

@@ -197,7 +197,7 @@ void Service::load_customerList()
         tmp_cus = stoi(tmp);
         getline(fs, tmp_income);
         tmp_inc = stoi(tmp_income);
-        c1.changeName(tmp);
+        c1.setName(tmp);
         c1.setPoint(tmp_inc);
         customerList.push_back(c1);
     }
