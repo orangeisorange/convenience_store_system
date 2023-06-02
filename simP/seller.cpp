@@ -255,7 +255,6 @@ void seller::load_product_csv()
     while (getline(fs, test, ',')) {
         name = test;
         getline(fs, test);
-        cout << test;
         income1 = stoi(test);
         product_income_pair.insert(make_pair(name, income1));
     }
