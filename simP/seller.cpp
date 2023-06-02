@@ -254,7 +254,8 @@ void seller::load_product_csv()
     product_income_pair.clear();
     while (getline(fs, test, ',')) {
         name = test;
-        getline(fs, test, ',');
+        getline(fs, test);
+        cout << test;
         income1 = stoi(test);
         product_income_pair.insert(make_pair(name, income1));
     }
@@ -273,7 +274,7 @@ void seller::load_date_csv()
     day_income_pair.clear();
     while (getline(fs, tmp, ',')) {
         date = stoi(tmp);
-        getline(fs, tmp, ',');
+        getline(fs, tmp);
         income1 = stoi(tmp);
         day_income_pair.insert(make_pair(date, income1));
     }
@@ -285,7 +286,7 @@ void seller::save_product_csv()
     ofstream fs("product_income.csv", ios::out);
     for (auto& product : product_income_pair)
     {
-        fs << product.first << ',' << product.second << '\n';
+        fs << product.first << ',' << product.second<< '\n';
     }
 }
 
@@ -314,13 +315,15 @@ void seller::load_receipt()
         p->refresh_receipt_product(p);
         receipt_day_num = stoi(tmp);
         if ( receipt_day_num == 0) break;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             getline(fs, tmp, ',');
             tmp_count = stoi(tmp);
             p[i].stock_plus(tmp_count);
         }
-
+        getline(fs, tmp);
+        tmp_count = stoi(tmp);
+        p[4].stock_plus(tmp_count);
         receipt.insert(make_pair(receipt_day_num, p));
         if(cur_day_receipt < receipt_day_num)
             cur_day_receipt = receipt_day_num + 1;
